@@ -123,8 +123,8 @@ function myFunction() {
             </div>
             <input type="hidden" name="accion" value="login" />
             <button id="login" type="submit" class="btn btn-success">Sign in</button>
-            <!--input type="hidden" name="accion" value="login" />
-            <button id="login" type="submit" class="btn btn-primary">Register</button-->
+            <input type="hidden" name="accion" value="register" />
+            <button id="register" type="submit" class="btn btn-primary">Register</button>
           </form>
         <?php } ?>
         </div><!--/.navbar-collapse -->
