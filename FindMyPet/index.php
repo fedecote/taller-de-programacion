@@ -44,8 +44,7 @@ if ($conn->conectar()) {
                 . "LIMIT :inicio,:cantidad";
 
         $parametros = array(
-            array("inicio", (($pagina - 1) * CANTXPAG),
-                "int", 0),
+            array("inicio", (($pagina - 1) * CANTXPAG),"int", 0),
             array("cantidad", CANTXPAG, "int", 0)
         );
             

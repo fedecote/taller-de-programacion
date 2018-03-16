@@ -42,5 +42,9 @@
                 </div><!--/.navbar-collapse -->
             </div>
         </nav>
+        <div id="errorBox" class="myAlert-top alert alert-danger">
+            <a href="#" class="close" data-hide="alert" aria-label="close" >&times;</a>
+            <label id="error"></label>
+        </div>
     </body>
 </html>
