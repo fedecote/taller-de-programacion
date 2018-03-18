@@ -56,7 +56,7 @@ div.filter{
 }
 
 div#holder {
-    border: 5px dashed #CCC;
+    border: 2px dashed #CCC;
     width:400px;
     font-family:Verdana;
 }
@@ -65,9 +65,19 @@ div#holder tr:first-child {
     text-align:center;
 }
 div#holder tr:last-child {
-   height:300px;
-   line-height: 50px;
+    height:300px;
+    line-height: 50px;
 }
 div#holder li img {
     height: 30px;
+}
+
+span.close {
+    float: left;
+    margin-top: 3%;
+    margin-left: -10%;
+    opacity: 0.8;
+    color: red;
+    font-size: 200%;
+    z-index:9999;
 }

@@ -38,10 +38,8 @@ if ($conn->conectar()) {
         $result = $conn->siguienteRegistro();
         $cantPaginas = ceil($result["Total"] / CANTXPAG);
         
-        $sql =
-                "SELECT * FROM PUBLICACION WHERE Estado = 0";
-        $sql .= " "
-                . "LIMIT :inicio,:cantidad";
+        $sql = "SELECT * FROM PUBLICACION WHERE Estado = 0";
+        $sql .= "LIMIT :inicio,:cantidad";
 
         $parametros = array(
             array("inicio", (($pagina - 1) * CANTXPAG),"int", 0),

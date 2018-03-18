@@ -8,17 +8,17 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li>
-                        <div class="vl" style="border-left: 1px solid darkslategrey;
+                        <div class="vl" style="border-left: 1px solid lightgray;
                              height: 57px;"></div>
                     </li>
-                    <li><a href="#">Statics</a></li>
+                    <li><a href="Estadisticas.php">Statics</a></li>
                     <li>
-                        <div class="vl" style="border-left: 1px solid darkslategrey;
+                        <div class="vl" style="border-left: 1px solid lightgray;
                              height: 57px;"></div>
                     </li>
                     <li><a href="IrANuevaPublicacion.php">New Publication</a></li>
                     <li>
-                        <div class="vl" style="border-left: 1px solid darkslategrey;
+                        <div class="vl" style="border-left: 1px solid lightgray;
                              height: 57px;"></div>
                     </li>
                 </ul>
@@ -33,7 +33,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <form class="navbar-form navbar-right" role="form" action="<?php $_SERVER["PHP_SELF"]; ?>" method="POST">
                           <div id="loggedInUsername" class="form-group">
-                            <a style="color:white;">Bienvenido <strong>{$Username}</strong></a>
+                            <a  id="usuario" alt="{$Username}" style="color:white;">Bienvenido <strong>{$Username}</strong></a>
                         </div>
                         <div id="logout" style="text-align: -webkit-right;">    
                             <a  href="Logout.php">Logout</a>

@@ -1,6 +1,7 @@
 $(document).ready(inicializo);
 
 function inicializo() {
+    $(".myAlert-top").hide();
     $("#cerrar").click(closePublication);
     $("#siguiente").click(NextPhoto);
     $("#btnPregunta").click(NuevaPregunta);
