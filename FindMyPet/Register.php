@@ -4,35 +4,62 @@ session_start();
 require_once("includes/class.Conexion.BD.php");
 require_once("config/configuracion.php");
 
-$usuario = $_POST['usuario'];
+$respuesta = array();
 
-$conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
+try {
+    $usuario = $_POST['usuario'];
 
-if ($conn->conectar()) {
-    $param = array(
-        array("usuario", $_POST["usuario"], "string"),
-        array("password", $_POST["password"], "string"),
-        array("name", $_POST["name"], "string"),
-        array("surname", $_POST["surname"], "string"),
-    );
+    $conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
 
-    $sql = "insert USUARIO (Email, Nombre, Apellido, Password) "
-            . "values( :usuario, :name, :surname, :password)";
-    if ($conn->consulta($sql, $param)) {
+    if ($conn->conectar()) {
+        $email = $_POST["usuario"];
+        $password = $_POST["password"];
+        $name = $_POST["name"];
+        $surname = $_POST["surname"];
 
-        if ($conn->ultimoIdInsert() > 0) {
-            $_SESSION['ingreso'] = true;
-            setcookie("usuario", $usuario);
-            $respuesta['usuario'] = $usuario;
-            $respuesta['estado'] = "OK";
+        $sql = "SELECT COUNT(*) existe FROM USUARIO WHERE Email='" . $email . "'";
+        $param = array();
+        if ($conn->consulta($sql, $param)) {
+            $yaExistia = $conn->siguienteRegistro();
+            if ($yaExistia['existe'] > 0) {
+                $respuesta['estado'] = "NO OK";
+                $respuesta['mensaje'] = "El nombre de usuario ingresado ya existe";
+                echo json_encode($respuesta);
+            }
         } else {
-            $respuesta['estado'] = "NO OK";
+            $param = array(
+                array("usuario", $email, "string"),
+                array("password", $password, "string"),
+                array("name", $name, "string"),
+                array("surname", $surname, "string"),
+            );
+            $sql = "insert USUARIO (Email, Nombre, Apellido, Password) "
+                    . "values( :usuario, :name, :surname, :password)";
+            if ($conn->consulta($sql, $param)) {
+                if ($conn->ultimoIdInsert() > 0) {
+                    $_SESSION['ingreso'] = true;
+                    setcookie("usuario", $usuario);
+                    $respuesta['usuario'] = $usuario;
+                    $respuesta['estado'] = "OK";
+                } else {
+                    $respuesta['estado'] = "NO OK";
+                    $respuesta['mensaje'] = "Ocurrio un problema inesperado, por favor reintente mas tarde";
+                }
+                echo json_encode($respuesta);
+            } else {
+                $respuesta['estado'] = "NO OK";
+                $respuesta['mensaje'] = "Ocurrio un problema inesperado, por favor reintente mas tarde";
+                echo json_encode($respuesta);
+            }
         }
-        echo json_encode($respuesta);
     } else {
-        echo json_encode(array("result" => "ERROR SQL"));
+        $respuesta['estado'] = "NO OK";
+        $respuesta['mensaje'] = "La pagina se encuentra en mantenimiento, por favor reintente mas tarde. Disculpe las molestias";
+        echo json_encode($respuesta);
     }
-} else {
-    echo json_encode(array("result" => "ERROR CONEXION"));
+} catch (Exception $e) {
+    $respuesta['estado'] = "NO OK";
+    $respuesta['mensaje'] = "La pagina se encuentra en mantenimiento, por favor reintente mas tarde. Disculpe las molestias";
+    echo json_encode($respuesta);
 }
 ?>

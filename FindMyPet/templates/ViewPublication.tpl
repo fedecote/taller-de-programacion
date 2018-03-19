@@ -22,9 +22,18 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="js/ViewPublication.js"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo_-wF2ESwHGiCC3nOy7ibNJtg_zpYYaQ&callback=myMap"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
+            <script type="text/javascript" src="lib/jspdf.debug.js"></script>
+            <script type="text/javascript" src="lib/html2canvas.js"></script>
             <link rel="shortcut icon" href="favicon.ico" />
         </head>
         <body>
+            <style>
+                .print-wrap {
+                    width: 500px;
+                }
+            </style>
             {* INCLUYO EL CABEZAL *}
             {if ($ingreso)}
                 {include file = "cabezalPrivado.tpl"}
@@ -42,15 +51,21 @@
                     {else}
                         <button id="closed" alignment="right" class="btn btn-danger" style="cursor: default; float: right; margin-top: 3%;">Publicacion Cerrada</button>
                     {/if}
-                    <p><h2>{$titulo}</h2></p>
+                    <button id="btnPDF" alignment="right" class="btn" style="float: right; margin-top: 1%; margin-right: 1%;">Exportar a PDF</button>
+                    <p id="tituloPDF" alt="{$titulo}"><h2>{$titulo}</h2></p>
                 </div>
-                <div style="padding-top: 2%;">
+                <div>
                     <div style="width:30%; float:left; padding-left: 10%;">
                         <div id="imagen1" alt="{$cantFotos}">
                             <img id="imagen" class="card-img-top" src="{$foto.Ruta}" alt="0" style="width: 120%;">
                             <img class="card-img-top" id="anterior" src="img/arrow-back.png" alt="Back" height="30" width="30">
                             <img class="card-img-top" id="siguiente" src="img/arrow-next.png" alt="Next" height="30" width="30">
                         </div>
+                        {if ($latitud != "null" && $longitud != "null")}
+                            <div id="map" class="noExport" alt="{$latitud}" style="width: 120%;height: 350px; margin-top: 2%;"></div>
+                            <div id="latitud" alt="{$latitud}" style="display: none"></div>
+                            <div id="longitud" alt="{$longitud}" style="display: none"></div>
+                        {/if}
                     </div>
                     <div class="card-body" style="float: left; padding-left: 6%;  width: 50%">
                         <p style="text-align: left"><b>Tipo de publicacion:</b>{$tipo}</p>
@@ -97,7 +112,7 @@
                         {/if}
                     </div>
                 </div>
-                <div id="closeTab" style="margin-top: -1%; width: 20%; margin-left: 61%; border-style: groove; border-radius: 5%; position: absolute;">
+                <div id="closeTab" style="margin-top: -1%; width: 20%; margin-left: 61%; border-style: groove; border-radius: 5%; position: absolute;    position: absolute;background-color: white;">
                     <button id="btnCancel" type="button" class="close" style="margin-right: 4%;">&times;</button>
                     <label for="resultado" style="margin-top: 6%;">Resultado:</label>
                     <select name="resultado" id="resultado" class="form-control input-md" style="width: 94%;">
@@ -107,5 +122,12 @@
                     <input type="hidden" name="accion" value="Cerrar" />
                     <button id="cerrar" type="submit" class="btn btn-primary" data-dismiss="modal" style="margin-left: 60%; margin-top: 4%; margin-bottom: 4%;">Cerrar</button>
                 </div>    
+                <div id="editor" style="display: none"></div>
+            </div>
+            <div id="holder" alt="0" style="margin-top: 160px; width: 50%; margin-left: 5%; cursor: pointer; border-color: darkgrey; float: left; border-style: hidden; display: none">
+                {foreach $fotos item=fotoItem}
+                    <div style="display:inline;position: relative;"><img class='card-img-top' src="{$fotoItem.Ruta}" alt='Imagen' style='width: 35%;height: 170px;float: left;margin-right: 5%;margin-left: 5%; max-height: 180px;margin-top:2%;'></div>
+                    {/foreach}
+            </div>
         </body>
     </html>

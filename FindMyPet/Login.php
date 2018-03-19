@@ -4,37 +4,50 @@ session_start();
 require_once("includes/class.Conexion.BD.php");
 require_once("config/configuracion.php");
 
-$usuario = $_POST['usuario'];
-$contra = $_POST['password'];
+try {
+    $usuario = $_POST['usuario'];
+    $contra = $_POST['password'];
+    $remember = $_POST['remember'];
+    $respuesta = array();
 
-$conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
+    $conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
 
-if ($conn->conectar()) {
-    $sql = "SELECT * FROM USUARIO";
+    if ($conn->conectar()) {
+        $sql = "SELECT * FROM USUARIO";
+        $sql .= " WHERE Email LIKE '" . $usuario . "'";
+        $sql .= " && Password LIKE '" . $contra . "'";
+        $parametros = array();
 
-    $sql .= " WHERE Email LIKE '" . $usuario . "'";
-
-    $sql .= " && Password LIKE '" . $contra . "'";
-
-    $parametros = array();
-
-    if ($conn->consulta($sql, $parametros)) {
-        $usuario = $conn->siguienteRegistro();
-        $respuesta = array();
-        if (empty($usuario)) {
-            $respuesta['estado'] = "NO OK";
+        if ($conn->consulta($sql, $parametros)) {
+            $usuario = $conn->siguienteRegistro();
+            if (empty($usuario)) {
+                $respuesta['estado'] = "NO OK";
+                $respuesta['mensaje'] = "Usuario o contraseña incorrecto";
+            } else {
+                $_SESSION['ingreso'] = true;
+                if ($remember === "true") {
+                    setcookie("usuario", $usuario['Email'], time() + (10 * 365 * 24 * 60 * 60));
+                }else{
+                    setcookie("usuario", $usuario['Email']);
+                }
+                $respuesta['usuario'] = $usuario;
+                $respuesta['estado'] = "OK";
+            }
+            echo json_encode($respuesta);
         } else {
-            $_SESSION['ingreso'] = true;
-            setcookie("usuario", $usuario['Email']);
-            $respuesta['usuario'] = $usuario;
-            $respuesta['estado'] = "OK";
+            $respuesta['estado'] = "NO OK";
+            $respuesta['mensaje'] = "Usuario o contraseña incorrecto";
+            echo json_encode($respuesta);
         }
-
-        echo json_encode($respuesta);
     } else {
-        echo json_encode(array("result" => "ERROR SQL"));
+        $respuesta['estado'] = "NO OK";
+        $respuesta['mensaje'] = "La applicacion se encuentra en mantenimiento, por favor reintente mas tarde. Disculpe las molestias";
+        echo json_encode($respuesta);
     }
-} else {
-    echo json_encode(array("result" => "ERROR CONEXION"));
+} catch (Exception $e) {
+    $respuesta = array();
+    $respuesta['estado'] = "NO OK";
+    $respuesta['mensaje'] = "La applicacion se encuentra en mantenimiento, por favor reintente mas tarde. Disculpe las molestias";
+    echo json_encode($respuesta);
 }
 ?>

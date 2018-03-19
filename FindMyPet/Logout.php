@@ -1,8 +1,7 @@
 <?php
-
-session_start();
-$_SESSION['ingreso'] = false;
+//unset($_COOKIE['usuario']);
+setcookie ("usuario", "", time() - 3600);
+session_destroy();
 header("Location: index.php");
-
 ?>
 

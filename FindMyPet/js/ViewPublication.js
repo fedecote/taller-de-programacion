@@ -1,5 +1,4 @@
 $(document).ready(inicializo);
-
 function inicializo() {
     $(".myAlert-top").hide();
     $("#cerrar").click(closePublication);
@@ -7,15 +6,42 @@ function inicializo() {
     $("#btnPregunta").click(NuevaPregunta);
     $('#btnClose').click(ShowCloseTab);
     $('#btnCancel').click(HideCloseTab);
+    $('#btnPDF').click(toPDF);
     HideCloseTab();
     LoadPhoto();
+    myMap();
 }
 
-function HideCloseTab(){
+function toPDF() {
+    $("#holder").css({"display":"block"});
+    if (!window.print) {
+        return
+    }
+    window.print()
+    $("#holder").css({"display":"none"});
+}
+
+function myMap() {
+    if ($("#map").attr("alt") != "null") {
+        var mapCanvas = document.getElementById("map");
+        var myCenter = new google.maps.LatLng(-34.8826933, -56.1600915);
+        var mapOptions = {center: myCenter, zoom: 12};
+        var map = new google.maps.Map(mapCanvas, mapOptions);
+        var latLng = new google.maps.LatLng($("#latitud").attr("alt"), $("#longitud").attr("alt"));
+        var marker = new google.maps.Marker({
+            position: latLng,
+            map: map
+
+        });
+
+    }
+}
+
+function HideCloseTab() {
     $('#closeTab').hide();
 }
 
-function ShowCloseTab(){
+function ShowCloseTab() {
     $('#closeTab').show();
 }
 
@@ -127,6 +153,7 @@ function close(respuesta) {
     if (respuesta == "OK") {
         $("#containerClose").empty();
         button = "<button id='closed' alignment='right' class='btn btn-danger' style='cursor: default; float: right; margin-top: 3%;'>Publicacion Cerrada</button>"
+        button += "<button id='btnPDF' alignment='right' class='btn' style='float: right; margin-top: 3%; margin-right: 1%;'>Exportar a PDF</button>";
         $("#containerClose").append(button);
         HideCloseTab();
     }

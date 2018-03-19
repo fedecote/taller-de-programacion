@@ -69,25 +69,13 @@ function ShowFilters() {
 }
 
 function irPaginaFiltro() {
-    //Filtro por tipo de operacion
     data = "&nombrePublicacion=" + $("#nombrePublicacion").val();
-    
-    data += "&estado=" + $("#estado").val();
-
     data += "&cantPaginado=" + $("#cantPaginado").val();
-    //Filtro por propiedad
     data += "&tipoPublicacion=" + $("#tipoPublicacion").val();
-
-    //Filtro por departamento
     data += "&especie=" + $("#especie").val();
-
-    //Filtro por barrio
     data += "&raza=" + $("#raza").val();
-
     data += "&barrio=" + $("#barrio").val();
-
     data += "&pagina=" + $("#paginaActual").val();
-    
     $.ajax({
         url: "filtrar.php",
         dataType: "JSON",
@@ -127,7 +115,7 @@ function respuestaPag(respuesta) {
                 //busqueda += "<img class='card-img-top' src='img/cat.png' alt='Card image' style='width:75%'>";
                 busqueda += "<div class='card-body'>";
                 busqueda += "<h4 class='card-title'>" + publicacion["Tipo"] + "</h4>";
-                busqueda += "<p class='card-text' style='word-wrap: break-word;'>";
+                busqueda += "<p class='card-text' style='word-wrap: break-word;'><em>";
                 desc = "";
                 cant = 0;
                 for (i = 0; i < publicacion["Descripcion"].length && i < 151; i++) {
@@ -136,13 +124,13 @@ function respuestaPag(respuesta) {
                         desc += "...";
                     }
                 }
-                busqueda += desc + "</p>";
+                busqueda += desc + "</em></p>";
                 busqueda += "</div>";
                 busqueda += "</div>";
                 busqueda += "</div>";
             }
             
-            busqueda += "<div style='position: absolute; bottom: 0; margin-left: 50%; width: 50%; margin-bottom: 1%;' id='paginaActual' alt='" + pagina +"'>";
+            busqueda += "<div style='position: fixed; bottom: 0; margin-left: 50%; width: 50%; margin-top:'" + $(window).height() + "' ;' id='paginaActual' alt='" + pagina +"'>";
             if(pagina > 1){
                 busqueda += "<img class='card-img-top' id='anterior' src='img/arrow-back.png' alt='" + (pagina -1) + "' height='30' width='30' style='margin-right: 10%; cursor:pointer;'>";
             }
@@ -165,22 +153,13 @@ function respuestaPag(respuesta) {
 }
 
 function PaginaAnterior(){
-    //Filtro por tipo de operacion
     data = "&nombrePublicacion=" + $("#nombrePublicacion").val();
-
-    //Filtro por propiedad
     data += "&tipoPublicacion=" + $("#tipoPublicacion").val();
-
-    //Filtro por departamento
     data += "&especie=" + $("#especie").val();
-
-    //Filtro por barrio
     data += "&raza=" + $("#raza").val();
-
     data += "&barrio=" + $("#barrio").val();
-
     data += "&pagina=" + $("#anterior").attr("alt");
-    
+    data += "&cantPaginado=" + $("#cantPaginado").val();
     $.ajax({
         url: "filtrar.php",
         dataType: "JSON",
@@ -193,22 +172,13 @@ function PaginaAnterior(){
 }
 
 function PaginaSiguiente(){
-    //Filtro por tipo de operacion
     data = "&nombrePublicacion=" + $("#nombrePublicacion").val();
-
-    //Filtro por propiedad
     data += "&tipoPublicacion=" + $("#tipoPublicacion").val();
-
-    //Filtro por departamento
     data += "&especie=" + $("#especie").val();
-
-    //Filtro por barrio
     data += "&raza=" + $("#raza").val();
-
     data += "&barrio=" + $("#barrio").val();
-
     data += "&pagina=" + $("#siguiente").attr("alt");
-    
+    data += "&cantPaginado=" + $("#cantPaginado").val();
     $.ajax({
         url: "filtrar.php",
         dataType: "JSON",
@@ -222,7 +192,7 @@ function PaginaSiguiente(){
 
 function Publicacion() {
     var id = $(this).attr("alt");
-    window.open("ViewPublication.php?id=" + id + "&esConsulta=0");
+    window.open("ViewPublication.php?id=" + id);
 }
 
 function errorPag() {

@@ -11,8 +11,6 @@
         </div>
         <div id="filtros" class="filter">
             <div>
-                <label for="estado">Estado:</label>
-                <select name="estado" id="estado" class="form-control input-md"><option value="2">Todas</option><option selected="selected" value="0">Abiertas</option><option value="1">Cerradas</option></select>   
                 <label for="tipo">Tipo de publicacion:</label>
                 <select name="tipo" id="tipoPublicacion" class="form-control input-md"><option value="Todas">Todas</option><option value="Perdida">Perdida</option><option value="Encontrada">Encontrada</option></select>   
                 <label for="especie">Especie:</label>
@@ -31,10 +29,10 @@
                 </select>
                 <label for="cantPaginado">Cantidad de publicaciones por pagina:</label>
                 <select name="cantPaginado" id="cantPaginado" class="form-control input-md">
-                    <option value="2">2</option>
-                    <option selected ="selected" value="4">4</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
+                    <option selected ="selected" value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="Todos">Todos</option>
                 </select>
                 <br>
                 <input type="hidden" name="accion" value="filter" />

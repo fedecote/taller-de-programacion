@@ -41,7 +41,14 @@ if ($conn->conectar()) {
             $foto = $conn->siguienteRegistro();
             $smarty->assign("foto", $foto);
         }
-        
+
+        $sql = "SELECT * FROM IMAGEN WHERE IdPublicacion = '" . $publicacion['Id'] . "'";
+        $parametros = array();
+        if ($conn->consulta($sql, $parametros)) {
+            $fotos = $conn->restantesRegistros();
+            $smarty->assign("fotos", $fotos);
+        }
+
         $sql = "SELECT COUNT(*) Total FROM IMAGEN WHERE IdPublicacion = '" . $publicacion['Id'] . "'";
         $parametros = array();
         if ($conn->consulta($sql, $parametros)) {

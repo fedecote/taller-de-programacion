@@ -12,7 +12,10 @@ $especie = $_POST['especie'];
 $raza = $_POST['raza'];
 $barrio = $_POST['barrio'];
 $descripcion = $_POST['descripcion'];
-$email =  $_POST['usuario'];
+$email = $_POST['usuario'];
+$latitud = $_POST['latitud'];
+$longitud = $_POST['longitud'];
+
 $respuesta = array();
 
 if ($conn->conectar()) {
@@ -21,9 +24,8 @@ if ($conn->conectar()) {
     if ($conn->consulta($sql, $parametros)) {
         $result = $conn->siguienteRegistro();
         $IdUsuario = $result["Id"];
-        
-        $sql = "INSERT PUBLICACION(IdUsuario, Tipo, IdEspecie, IdRaza, IdBarrio, Titulo, Descripcion)VALUES('" . $IdUsuario . "', '";
-        $sql .= $tipoPublicacion . "', '" . $especie . "', '" . $raza . "', '" . $barrio . "', '" . $titulo . "', '" . $descripcion . "')";
+        $sql = "INSERT PUBLICACION(IdUsuario, Tipo, IdEspecie, IdRaza, IdBarrio, Titulo, Descripcion, Latitud, Longitud)VALUES('" . $IdUsuario . "', '";
+        $sql .= $tipoPublicacion . "', '" . $especie . "', '" . $raza . "', '" . $barrio . "', '" . $titulo . "', '" . $descripcion . "', '" . $latitud . "', '" . $longitud . "')";
         $parametros = array();
         if ($conn->consulta($sql, $parametros)) {
             if ($conn->ultimoIdInsert() > 0) {

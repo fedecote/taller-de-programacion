@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
     <head>
-        <!--script  type="text/javascript" src="js/Register.js"></script-->
+        <script  type="text/javascript" src="js/Register.js"></script>
     </head>
     <body>
         <div class="container">
@@ -11,34 +11,34 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Register</h4>
+                            <h4 class="modal-title">Registrar</h4>
                         </div>
                         <div class="modal-body">
                             <div>
                                 <div class="form-group">
-                                    <label>Name</label>
-                                    <input id="name" name="name" type="name" placeholder="Name" class="form-control">
+                                    <label>Nombre</label>
+                                    <input id="name" name="name" type="name" placeholder="Nombre" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label>Surname</label>
-                                    <input id="surname" name="surname" type="surname" placeholder="Surname" class="form-control">
+                                    <label>Apellido</label>
+                                    <input id="surname" name="surname" type="surname" placeholder="Apellido" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
                                     <input id="username" name="usuario" type="text" placeholder="Email" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label>Password</label>
-                                    <input id="pass" name="password" type="password" placeholder="Password" class="form-control">
+                                    <label>Contraseña</label>
+                                    <input id="pass" name="password" type="password" placeholder="Contraseña" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label>Repeat password</label>
-                                    <input id="repeatPassword" name="repeatPassword" type="password" placeholder="Repeat Password" class="form-control">
+                                    <label>Repetir contraseña</label>
+                                    <input id="repeatPassword" name="repeatPassword" type="password" placeholder="Repetir contraseña" class="form-control">
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <input type="hidden" name="accion" value="register" />
-                                <button id="btnRegister" type="submit" class="btn btn-primary">Register</button>
+                                <button id="btnRegister" type="submit" class="btn btn-primary">Registrar</button>
                             </div>
                         </div>
                     </div>

@@ -11,48 +11,127 @@ $esUsuario = $_SESSION['ingreso'];
 $conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
 
 if ($conn->conectar()) {
-    $sql = "SELECT COUNT(*) Total FROM PUBLICACION";
+
+    $datosEncontrados = array();
+
+    //Hallo las diferentes especies
+    $sql = "SELECT * FROM PUBLICACION  WHERE Tipo='Encontrada' GROUP By IdEspecie";
     $parametros = array();
     if ($conn->consulta($sql, $parametros)) {
-        $resultado = $conn->siguienteRegistro();
-        $total = $resultado["Total"];
-        $smarty->assign("total", $total);
+        $Especies = $conn->restantesRegistros();
 
-        $datos = array();
-        
-        $sql = "SELECT * FROM PUBLICACION GROUP By IdEspecie";
-        $parametros = array();
-        if ($conn->consulta($sql, $parametros)) {
-            $Especies = $conn->restantesRegistros();
-            foreach ($Especies as $i => $IdEspecie) {
-                $sql = "SELECT NOMBRE FROM ESPECIE WHERE Id='" . $IdEspecie["Id"][$i] . "'";
+        //Para cada especie me quedo con el nombre
+        $IdEspecie = count($Especies);
+        for ($i = 0; $i < $IdEspecie; $i++) {
+            $sql = "SELECT * FROM ESPECIE WHERE Id='" . $Especies[$i]["IdEspecie"] . "'";
+            $parametros = array();
+            $especie = array();
+            if ($conn->consulta($sql, $parametros)) {
+                $Nombreespecie = $conn->siguienteRegistro();
+                $especie["nombre"] = $Nombreespecie["Nombre"];
+
+                //Para cada especie hallo el total de publicaciones
+                $sql = "SELECT COUNT(*) TotalEspecie FROM PUBLICACION WHERE IdEspecie='" . $Especies[$i]["IdEspecie"] . "' && Tipo='Encontrada'";
                 $parametros = array();
                 if ($conn->consulta($sql, $parametros)) {
-                    $Nombreespecie = $conn->siguienteRegistro();
-                    $especie["nombre"] = $Nombreespecie;
+                    $resultado = $conn->siguienteRegistro();
+                    $especie["totalEspecie"] = $resultado["TotalEspecie"];
 
-                    $sql = "SELECT COUNT(*) TotalEspecie FROM PUBLICACION WHERE IdEspecie='" . $IdEspecie["Id"][$i] . "'";
+                    //Para cada especie hallo el total de publicaciones CERRADAS
+                    $sql = "SELECT COUNT(*) CerradosEspecie FROM PUBLICACION WHERE IdEspecie='" . $Especies[$i]["IdEspecie"] . "' && Estado='1' && Tipo='Encontrada'";
                     $parametros = array();
                     if ($conn->consulta($sql, $parametros)) {
                         $resultado = $conn->siguienteRegistro();
-                        $especie["totalEspecie"] = $resultado;
-                        
-                        $sql = "SELECT COUNT(*) CerradosEspecie FROM PUBLICACION WHERE IdEspecie='" . $IdEspecie["Id"][$i] . "'";
+                        $cerrados = $resultado["CerradosEspecie"];
+                        $especie["CerradosEspecie"] = $cerrados;
+                        $especie["AbiertosEspecie"] = $especie["totalEspecie"] - $cerrados;
+
+                        //Para cada especie hallo el total de publicaciones CERRADAS qeu se encontro con el dueño
+                        $sql = "SELECT COUNT(*) CerradosOK FROM PUBLICACION WHERE IdEspecie='" . $Especies[$i]["IdEspecie"] . "' && Estado='1' && Tipo='Encontrada' && Resultado='0'";
                         $parametros = array();
                         if ($conn->consulta($sql, $parametros)) {
                             $resultado = $conn->siguienteRegistro();
-                            $especie["CerradosEspecie"] = $resultado;
-                            $especie["AbiertosEspecie"] = $especie["totalEspecie"] - $resultado;
-                            array_push($datos, $especie); 
+                            $cerradosOK = $resultado["CerradosOK"];
+                            $especie["CerradosOK"] = $cerradosOK;
+
+                            //Para cada especie hallo el total de publicaciones CERRADAS que NO sencontro con el dueño
+                            $sql = "SELECT COUNT(*) CerradosNOOK FROM PUBLICACION WHERE IdEspecie='" . $Especies[$i]["IdEspecie"] . "' && Estado='1' && Tipo='Encontrada' && Resultado='1'";
+                            $parametros = array();
+                            if ($conn->consulta($sql, $parametros)) {
+                                $resultado = $conn->siguienteRegistro();
+                                $cerradosNOOK = $resultado["CerradosNOOK"];
+                                $especie["CerradosNOOK"] = $cerradosNOOK;
+                                $datosEncontrados[] = $especie;
+                            }
                         }
                     }
                 }
             }
-            $smarty->assign("total", $total);
+        }
+    }
+
+    $datosPerdidos = array();
+
+    //Hallo las diferentes especies
+    $sql = "SELECT * FROM PUBLICACION  WHERE Tipo='Perdida' GROUP By IdEspecie";
+    $parametros = array();
+    if ($conn->consulta($sql, $parametros)) {
+        $Especies = $conn->restantesRegistros();
+
+        //Para cada especie me quedo con el nombre
+        $IdEspecie = count($Especies);
+        for ($i = 0; $i < $IdEspecie; $i++) {
+            $sql = "SELECT * FROM ESPECIE WHERE Id='" . $Especies[$i]["IdEspecie"] . "'";
+            $parametros = array();
+            $especie = array();
+            if ($conn->consulta($sql, $parametros)) {
+                $Nombreespecie = $conn->siguienteRegistro();
+                $especie["nombre"] = $Nombreespecie["Nombre"];
+
+                //Para cada especie hallo el total de publicaciones
+                $sql = "SELECT COUNT(*) TotalEspecie FROM PUBLICACION WHERE IdEspecie='" . $Especies[$i]["IdEspecie"] . "' && Tipo='Perdida'";
+                $parametros = array();
+                if ($conn->consulta($sql, $parametros)) {
+                    $resultado = $conn->siguienteRegistro();
+                    $especie["totalEspecie"] = $resultado["TotalEspecie"];
+
+                    //Para cada especie hallo el total de publicaciones CERRADAS
+                    $sql = "SELECT COUNT(*) CerradosEspecie FROM PUBLICACION WHERE IdEspecie='" . $Especies[$i]["IdEspecie"] . "' && Estado='1' && Tipo='Perdida'";
+                    $parametros = array();
+                    if ($conn->consulta($sql, $parametros)) {
+                        $resultado = $conn->siguienteRegistro();
+                        $cerrados = $resultado["CerradosEspecie"];
+                        $especie["CerradosEspecie"] = $cerrados;
+                        $especie["AbiertosEspecie"] = $especie["totalEspecie"] - $cerrados;
+
+                        //Para cada especie hallo el total de publicaciones CERRADAS qeu se encontro con el dueño
+                        $sql = "SELECT COUNT(*) CerradosOK FROM PUBLICACION WHERE IdEspecie='" . $Especies[$i]["IdEspecie"] . "' && Estado='1' && Tipo='Perdida' && Resultado='0'";
+                        $parametros = array();
+                        if ($conn->consulta($sql, $parametros)) {
+                            $resultado = $conn->siguienteRegistro();
+                            $cerradosOK = $resultado["CerradosOK"];
+                            $especie["CerradosOK"] = $cerradosOK;
+
+                            //Para cada especie hallo el total de publicaciones CERRADAS que NO sencontro con el dueño
+                            $sql = "SELECT COUNT(*) CerradosNOOK FROM PUBLICACION WHERE IdEspecie='" . $Especies[$i]["IdEspecie"] . "' && Estado='1' && Tipo='Perdida' && Resultado='1'";
+                            $parametros = array();
+                            if ($conn->consulta($sql, $parametros)) {
+                                $resultado = $conn->siguienteRegistro();
+                                $cerradosNOOK = $resultado["CerradosNOOK"];
+                                $especie["CerradosNOOK"] = $cerradosNOOK;
+                                $datosPerdidos[] = $especie;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
-
+$smarty->assign("datosEncontrados", $datosEncontrados);
+setcookie("Rncontrados", count($datosEncontrados));
+setcookie("Perdidos", count($datosPerdidos));
+$smarty->assign("datosPerdidos", $datosPerdidos);
 $esUsuario = $_SESSION['ingreso'];
 $smarty->assign("ingreso", $esUsuario);
 $smarty->assign("Username", $_COOKIE['usuario']);

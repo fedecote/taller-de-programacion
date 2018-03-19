@@ -13,7 +13,8 @@ function inicializo() {
     $("#inputUpload").change(previewMainImage);
     $("#uploadManyFiles").change(previewImage);
     resizeImage();
-    $("#btnGuardar").click(guardar);
+    $("#btnGuardar").click(checkFields);
+    $("#titulo").focusout(cleanInvalidFields);
     $(".myAlert-top").hide();
     $("#textAgregar").click(OpenWindowsExplorer2);
     $("#holder").click(function (event) {
@@ -42,6 +43,37 @@ function inicializo() {
         }
     });
     ShowRazas();
+    myMap();
+    gmarkers = [];
+}
+function myMap() {
+    var mapCanvas = document.getElementById("map");
+    var myCenter = new google.maps.LatLng(-34.8826933, -56.1600915);
+    var mapOptions = {center: myCenter, zoom: 12};
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+    google.maps.event.addListener(map, 'click', function (event) {
+        placeMarker(map, event.latLng);
+    });
+}
+
+function placeMarker(map, location) {
+    removeMarkers();
+    gmarkers = [];
+    marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
+    //var infowindow = new google.maps.InfoWindow({
+    //    content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+    //});
+    //infowindow.open(map, marker);
+    gmarkers.push(marker);
+}
+
+function removeMarkers() {
+    for (i = 0; i < gmarkers.length; i++) {
+        gmarkers[i].setMap(null);
+    }
 }
 
 function WantToQuitImage(event) {
@@ -78,6 +110,12 @@ function focusLost() {
     $("#agregarImagenPrincipal").css({"background-color": "white"});
 }
 
+function cleanInvalidFields() {
+    if ($("#titulo").val()) {
+        $("#titulo").removeClass("invalido");
+    }
+}
+
 function previewImage() {
     if (this.files && this.files[0]) {
         var fileName = $("#uploadManyFiles").val();
@@ -102,7 +140,6 @@ function previewImage() {
             myAlertTop('El archivo subido no es valido');
         }
     }
-
 }
 
 function previewMainImage() {
@@ -133,6 +170,20 @@ function OpenWindowsExplorer2(event) {
     $("#uploadManyFiles").trigger("click");
 }
 
+function checkFields() {
+    if ($("#titulo").val() === "") {
+        myAlertTop("El titulo no puede quedar vacio");
+        $("#titulo").addClass("invalido");
+    } else {
+        if ($("#inputUpload").val() === "") {
+            myAlertTop("La publicacion debe tener al menos una imagen de portada");
+        } else {
+            guardar();
+        }
+    }
+}
+
+
 function guardar() {
     data = "&titulo=" + $("#titulo").val();
     data += "&tipoPublicacion=" + $("#tipoPublicacion").val();
@@ -141,6 +192,13 @@ function guardar() {
     data += "&barrio=" + $("#barrio").val();
     data += "&descripcion=" + $("#descripcion").val();
     data += "&usuario=" + $("#usuario").attr("alt");
+    if (gmarkers.length > 0) {
+        data += "&latitud=" + gmarkers[0].getPosition().lat();
+        data += "&longitud=" + gmarkers[0].getPosition().lng();
+    } else {
+        data += "&latitud=" + "null";
+        data += "&longitud=" + "null";
+    }
     $.ajax({
         url: "CrearPublicacion.php",
         dataType: "JSON",
@@ -179,7 +237,7 @@ function upload(respuesta) {
                     myAlertTop("La imagen " + file + " no ha sido subida porqeu no es del tipo soportado");
                 }
             }
-            
+
             $.ajax({
                 url: 'upload.php', // point to server-side PHP script 
                 dataType: 'JSON', // what to expect back from the PHP script, if anything
@@ -208,7 +266,7 @@ function myAlertTop(mensaje) {
     $(".myAlert-top").show();
     setTimeout(function () {
         $(".myAlert-top").hide();
-    }, 20000);
+    }, 8000);
     $("#error").html(mensaje);
 }
 
@@ -217,7 +275,9 @@ function errorAlert() {
 }
 
 function response(respuesta) {
-    myAlertTop(respuesta);
+    if (respuesta === "OK") {
+        window.location = "index.php";
+    }
 }
 
 

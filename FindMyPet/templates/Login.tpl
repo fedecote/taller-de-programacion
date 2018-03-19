@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html> 
     <head>
+        <script  type="text/javascript" src="js/Login.js"></script>
     </head>
     <body>
         <div class="container">
@@ -23,7 +24,7 @@
                                     <input id="password" name="password" type="password" placeholder="Password" class="form-control">
                                 </div>
                                 <div  class="form-group">
-                                    <input type="checkbox" name="remember" value="true" id="remember">
+                                    <input type="checkbox" name="remember" id="remember">
                                     <label for="remember">Remember me</label>
                                 </div>
                             </div>

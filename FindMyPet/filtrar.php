@@ -23,11 +23,8 @@ if ($conn->conectar()) {
 
     $sql = "SELECT COUNT(*) Total FROM PUBLICACION";
 
-    $sql .= " WHERE Id > 0";
+    $sql .= " WHERE Estado = 0";
 
-    if ($estado != 2) {
-        $sql .= "&& Estado ='" . $estado . "'";
-    }
     if ($nombrePublicacion != '') {
         $sql .= " && (Titulo like'%" . $nombrePublicacion . "%' || Descripcion like '%" . $nombrePublicacion . "%')";
     }
@@ -55,11 +52,7 @@ if ($conn->conectar()) {
 
     $sql = "SELECT * FROM PUBLICACION";
 
-    $sql .= " WHERE Id > 0";
-
-    if ($estado != 2) {
-        $sql .= "&& Estado ='" . $estado . "'";
-    }
+    $sql .= " WHERE Estado = 0";
 
     if ($nombrePublicacion != '') {
         $sql .= " && (Titulo like'%" . $nombrePublicacion . "%' || Descripcion like '%" . $nombrePublicacion . "%')";
@@ -80,13 +73,16 @@ if ($conn->conectar()) {
         $sql .= " && IdBarrio ='" . $barrio . "'";
     }
 
-    $sql .= " LIMIT :inicio,:cantidad";
-
-    $parametros = array(
-        array("inicio", (($pagina - 1) * $cantPaginado), "int", 0),
-        array("cantidad", $cantPaginado, "int", 0),
-    );
-
+    if ($cantPaginado === "Todos") {
+        $parametros = array();
+    } else {
+        $sql .= " LIMIT :inicio,:cantidad";
+        $parametros = array(
+            array("inicio", (($pagina - 1) * $cantPaginado), "int", 0),
+            array("cantidad", $cantPaginado, "int", 0),
+        );
+    }
+    
     if ($conn->consulta($sql, $parametros)) {
         $publicaciones = $conn->restantesRegistros();
         $respuesta = array();
