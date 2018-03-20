@@ -71,6 +71,8 @@ try {
             $sql .= " && IdBarrio ='" . $barrio . "'";
         }
 
+        $sql .= " ORDER BY Id DESC";
+        
         if ($cantPaginado === 0) {
             $parametros = array();
         } else {

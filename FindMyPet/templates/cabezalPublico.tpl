@@ -33,7 +33,7 @@
         </nav>
         <div id="errorBox" class="myAlert-top alert alert-danger">
             <a href="#" class="close" data-hide="alert" aria-label="close" >&times;</a>
-            <label id="error"></label>
+            <label style="word-wrap: break-word;" id="error"></label>
         </div>
         {include file="Login.tpl"}
         {include file="Register.tpl"}

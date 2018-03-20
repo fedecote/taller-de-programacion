@@ -111,7 +111,7 @@ function respuestaPag(respuesta) {
                     busqueda += "margin-left: 20%;";
                 }
                 busqueda += "'>";
-                busqueda += "<a class='btnInfo' href='#' alt='" + publicacion["Id"] + "'><h2>" + publicacion["Titulo"] + "</h2></a>";
+                busqueda += "<a class='btnInfo' href='#' alt='" + publicacion["Id"] + "'><h2 style='word-wrap: break-word;'>" + publicacion["Titulo"] + "</h2></a>";
                 busqueda += "<div class='card' style='width:350px'>";
                 for (i = 0; i < fotos.length; i++) {
                     foto = fotos[i];
