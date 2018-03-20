@@ -4,106 +4,112 @@ require_once("includes/class.Conexion.BD.php");
 require_once("config/configuracion.php");
 require_once("libs/Smarty.class.php");
 
-$pagina = (int) $_POST['pagina'];
-if ($pagina == 0) {
-    $pagina = 1;
-}
-$nombrePublicacion = $_POST['nombrePublicacion'];
-$tipoPublicacion = $_POST['tipoPublicacion'];
-$especie = $_POST['especie'];
-$raza = $_POST['raza'];
-$barrio = $_POST['barrio'];
-$cantPaginado = (int) $_POST['cantPaginado'];
-$estado = $_POST['estado'];
+$respuesta = array();
 
-
-$conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
-
-if ($conn->conectar()) {
-
-    $sql = "SELECT COUNT(*) Total FROM PUBLICACION";
-
-    $sql .= " WHERE Estado = 0";
-
-    if ($nombrePublicacion != '') {
-        $sql .= " && (Titulo like'%" . $nombrePublicacion . "%' || Descripcion like '%" . $nombrePublicacion . "%')";
+try {
+    $pagina = (int) $_POST['pagina'];
+    if ($pagina == 0) {
+        $pagina = 1;
     }
+    $nombrePublicacion = $_POST['nombrePublicacion'];
+    $tipoPublicacion = $_POST['tipoPublicacion'];
+    $especie = $_POST['especie'];
+    $raza = $_POST['raza'];
+    $barrio = $_POST['barrio'];
+    $cantPaginado = (int) $_POST['cantPaginado'];
+    $estado = $_POST['estado'];
 
-    if ($tipoPublicacion != "Todas") {
-        $sql .= " && Tipo='" . $tipoPublicacion . "'";
-    }
 
-    if ($especie != 0) {
-        $sql .= " && IdEspecie =" . $especie;
-    }
-    if ($raza != 0) {
-        $sql .= " && IdRaza =" . $raza;
-    }
+    $conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
 
-    if ($barrio != 0) {
-        $sql .= " && IdBarrio ='" . $barrio . "'";
-    }
+    if ($conn->conectar()) {
+        $sql = "SELECT COUNT(*) Total FROM PUBLICACION";
+        $sql .= " WHERE Estado = 0";
 
-    $parametros = array();
-    if ($conn->consulta($sql, $parametros)) {
-        $result = $conn->siguienteRegistro();
-        $cantPaginas = ceil($result["Total"] / $cantPaginado);
-    }
-
-    $sql = "SELECT * FROM PUBLICACION";
-
-    $sql .= " WHERE Estado = 0";
-
-    if ($nombrePublicacion != '') {
-        $sql .= " && (Titulo like'%" . $nombrePublicacion . "%' || Descripcion like '%" . $nombrePublicacion . "%')";
-    }
-
-    if ($tipoPublicacion != "Todas") {
-        $sql .= " && Tipo='" . $tipoPublicacion . "'";
-    }
-
-    if ($especie != 0) {
-        $sql .= " && IdEspecie =" . $especie;
-    }
-    if ($raza != 0) {
-        $sql .= " && IdRaza =" . $raza;
-    }
-
-    if ($barrio != 0) {
-        $sql .= " && IdBarrio ='" . $barrio . "'";
-    }
-
-    if ($cantPaginado === "Todos") {
-        $parametros = array();
-    } else {
-        $sql .= " LIMIT :inicio,:cantidad";
-        $parametros = array(
-            array("inicio", (($pagina - 1) * $cantPaginado), "int", 0),
-            array("cantidad", $cantPaginado, "int", 0),
-        );
-    }
-    
-    if ($conn->consulta($sql, $parametros)) {
-        $publicaciones = $conn->restantesRegistros();
-        $respuesta = array();
-        $respuesta["publicaciones"] = $publicaciones;
-        $respuesta["result"] = "OK";
-        $respuesta["pagina"] = $pagina;
-        $respuesta["cantPaginas"] = $cantPaginas;
-        $respuesta["paginaAntFiltro"] = $pagina - 1;
-        $respuesta["paginaSigFiltro"] = $pagina + 1;
-
-        $sql2 = "SELECT * FROM IMAGEN  Group By IdPublicacion";
-        $parametros = array();
-        if ($conn->consulta($sql2, $parametros)) {
-            $fotos = $conn->restantesRegistros();
-            $respuesta["fotos"] = $fotos;
+        if ($nombrePublicacion != '') {
+            $sql .= " && (Titulo like'%" . $nombrePublicacion . "%' || Descripcion like '%" . $nombrePublicacion . "%')";
         }
-        echo json_encode($respuesta);
+
+        if ($tipoPublicacion != "Todas") {
+            $sql .= " && Tipo='" . $tipoPublicacion . "'";
+        }
+
+        if ($especie != 0) {
+            $sql .= " && IdEspecie =" . $especie;
+        }
+        if ($raza != 0) {
+            $sql .= " && IdRaza =" . $raza;
+        }
+
+        if ($barrio != 0) {
+            $sql .= " && IdBarrio ='" . $barrio . "'";
+        }
+
+        $parametros = array();
+        if ($conn->consulta($sql, $parametros)) {
+            $result = $conn->siguienteRegistro();
+            $cantPaginas = ceil($result["Total"] / $cantPaginado);
+        }
+
+        $sql = "SELECT * FROM PUBLICACION";
+        $sql .= " WHERE Estado = 0";
+        if ($nombrePublicacion != '') {
+            $sql .= " && (Titulo like'%" . $nombrePublicacion . "%' || Descripcion like '%" . $nombrePublicacion . "%')";
+        }
+        if ($tipoPublicacion != "Todas") {
+            $sql .= " && Tipo='" . $tipoPublicacion . "'";
+        }
+
+        if ($especie != 0) {
+            $sql .= " && IdEspecie =" . $especie;
+        }
+        if ($raza != 0) {
+            $sql .= " && IdRaza =" . $raza;
+        }
+
+        if ($barrio != 0) {
+            $sql .= " && IdBarrio ='" . $barrio . "'";
+        }
+
+        if ($cantPaginado === 0) {
+            $parametros = array();
+        } else {
+            $sql .= " LIMIT :inicio,:cantidad";
+            $parametros = array(
+                array("inicio", (($pagina - 1) * $cantPaginado), "int", 0),
+                array("cantidad", $cantPaginado, "int", 0),
+            );
+        }
+
+        if ($conn->consulta($sql, $parametros)) {
+            $publicaciones = $conn->restantesRegistros();
+            $respuesta["publicaciones"] = $publicaciones;
+            $respuesta["result"] = "OK";
+            $respuesta["pagina"] = $pagina;
+            $respuesta["cantPaginas"] = $cantPaginas;
+            $respuesta["paginaAntFiltro"] = $pagina - 1;
+            $respuesta["paginaSigFiltro"] = $pagina + 1;
+
+            $sql2 = "SELECT * FROM IMAGEN  Group By IdPublicacion";
+            $parametros = array();
+            if ($conn->consulta($sql2, $parametros)) {
+                $fotos = $conn->restantesRegistros();
+                $respuesta["fotos"] = $fotos;
+            }
+            echo json_encode($respuesta);
+        } else {
+            $respuesta["result"] = "NO OK";
+            $respuesta["mensaje"] = "Ha ocurrido un error al obtener las publicaciones";
+            echo json_encode($respuesta);
+        }
     } else {
-        echo json_encode(array("result" => "ERROR SQL"));
+        $respuesta["result"] = "NO OK";
+        $respuesta["mensaje"] = "La pagina se encuentra en mantenimiento, por favor reintente mas tarde. Disculpe las molestias";
+        echo json_encode($respuesta);
     }
-} else {
-    echo json_encode(array("result" => "ERROR CONEXION"));
+} catch (Exception $e) {
+    $respuesta["result"] = "NO OK";
+    $respuesta["mensaje"] = "La pagina se encuentra en mantenimiento, por favor reintente mas tarde. Disculpe las molestias";
+    echo json_encode($respuesta);
 }
 ?>

@@ -7,7 +7,7 @@
     </head>
     <body>
         <div align="center" style="padding-top: 2%; ">
-            <input id="nombrePublicacion" type="text" placeholder="Search.." style="width: 30%;">
+            <input id="nombrePublicacion" type="text" placeholder="Buscar.." style="width: 30%;">
         </div>
         <div id="filtros" class="filter">
             <div>
@@ -32,7 +32,7 @@
                     <option selected ="selected" value="10">10</option>
                     <option value="15">15</option>
                     <option value="20">20</option>
-                    <option value="Todos">Todos</option>
+                    <option value="0">Todos</option>
                 </select>
                 <br>
                 <input type="hidden" name="accion" value="filter" />

@@ -13,12 +13,12 @@ function inicializo() {
 }
 
 function toPDF() {
-    $("#holder").css({"display":"block"});
+    $("#holder").css({"display": "block"});
     if (!window.print) {
         return
     }
     window.print()
-    $("#holder").css({"display":"none"});
+    $("#holder").css({"display": "none"});
 }
 
 function myMap() {
@@ -155,6 +155,8 @@ function close(respuesta) {
         button = "<button id='closed' alignment='right' class='btn btn-danger' style='cursor: default; float: right; margin-top: 3%;'>Publicacion Cerrada</button>"
         button += "<button id='btnPDF' alignment='right' class='btn' style='float: right; margin-top: 3%; margin-right: 1%;'>Exportar a PDF</button>";
         $("#containerClose").append(button);
+        $('#btnPDF').click(toPDF);
+        $("#containerClose").css({"margin-top": "1%"});
         HideCloseTab();
     }
 }

@@ -41,7 +41,7 @@
                             </div>
                             <!--img id="agregarImagenPrincipal" name="agregarImagenPrincipal" class="card-img-top" src="img/add.png" alt="0" style="margin-left: 31%; width: 50%; cursor: pointer;"-->
                         </div>
-                        <div id="map" style="width: 120%;height: 350px;"></div>
+                        <div id="map" style="width: 120%;height: 350px; margin-top: 5%;"></div>
                     </div>
                     <div class="card-body" style="float: left; padding-left: 0%;  width: 50%">
                         <p style="text-align: left"><b>Titulo:</b><input class="form-control" id="titulo" type="text" placeholder="Titulo publicacion..." style="width: 70%; margin-left: 3%"></p>
@@ -76,7 +76,7 @@
                         <p style="text-align: left;"><b>Descripcion:</b></p>
                         <textarea id="descripcion" rows="6" cols="50" type="text" placeholder="Descripcion..." style="float: left;"></textarea>
                         <div id="holder" alt="0" style="position: relative; margin-top: 160px; width: 90%; margin-left: -10%; height: 200px; cursor: pointer; border-color: darkgrey;">
-                            <p id="textAgregar" style="position: relative; margin-top: 12%;font-size: 100%;color: lightslategrey; cursor: pointer"><b>Arrastra imagenes aqui o haz click para arbir el explorador de windows</b></p>
+                            <p id="textAgregar" style="position: relative; margin-top: 12%;font-size: 100%;color: lightslategrey; cursor: pointer"><b>Haz click para arbir el explorador de windows y agregar imagenes</b></p>
                         </div>
 
                         <div style="margin-top: 3%; width: 100%; margin-left: -7%;">

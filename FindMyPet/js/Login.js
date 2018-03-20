@@ -38,6 +38,7 @@ function myAlertTop(mensaje) {
         $(".myAlert-top").hide();
     }, 8000);
     $("#error").html(mensaje);
+    $(".myAlert-top").css({"display":"visible"});
 }
 
 $(function () {

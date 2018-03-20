@@ -27,21 +27,6 @@ function inicializo() {
     $("#textAgregar").on('dragenter', dragEnter);
     $("#holder").on('dragenter', dragEnter);
     $("#holder").on('dragleave', dragLeave);
-    $('#holder').on({
-        'dragover dragenter': function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        },
-        'drop': function (e) {
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                $("#holder").empty();
-                imagen = "<img id='1' class='card-img-top' src='" + e.target.result + "' alt='Imagen' style='width: 20%; height:50%; cursor: pointer;'>"
-                $("#holder").append(imagen);
-            }
-            reader.readAsDataURL(e.target.files[0]);
-        }
-    });
     ShowRazas();
     myMap();
     gmarkers = [];
@@ -63,10 +48,6 @@ function placeMarker(map, location) {
         position: location,
         map: map
     });
-    //var infowindow = new google.maps.InfoWindow({
-    //    content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
-    //});
-    //infowindow.open(map, marker);
     gmarkers.push(marker);
 }
 
@@ -81,6 +62,11 @@ function WantToQuitImage(event) {
     var cant = $("#" + id).attr("alt");
     imagesFiles.splice(cant, 1);
     $("#imagen" + cant).fadeOut().detach();
+    var holder = ($("#holder").attr("alt") - 1);
+    $("#holder").attr("alt", holder);
+    if (holder === 0) {
+        $("#textAgregar").css({"display": "block"});
+    }
 }
 
 function resizeImage() {
@@ -216,6 +202,7 @@ function error(respuesta) {
 
 function upload(respuesta) {
     if (respuesta['status'] == "OK") {
+        IdPublicacion = respuesta["IdPublicacion"];
         var cantImagenes = parseInt($("#holder").attr("alt"));
         var fileName = $("#inputUpload").val();
         var idxDot = fileName.lastIndexOf(".") + 1;
@@ -234,10 +221,9 @@ function upload(respuesta) {
                     form_data.append('file' + i, file_data2);
                 } else {
                     var file = str_replace("\\", '/', fileName2);
-                    myAlertTop("La imagen " + file + " no ha sido subida porqeu no es del tipo soportado");
+                    myAlertTop("La imagen " + file + " no ha sido subida porque no es del tipo soportado");
                 }
             }
-
             $.ajax({
                 url: 'upload.php', // point to server-side PHP script 
                 dataType: 'JSON', // what to expect back from the PHP script, if anything
@@ -250,7 +236,6 @@ function upload(respuesta) {
                 error: function (request) {
                     myAlertTop(request.responseText);
                 }
-
             });
         } else {
             myAlertTop('El archivo subido no es valido');
@@ -270,16 +255,35 @@ function myAlertTop(mensaje) {
     $("#error").html(mensaje);
 }
 
-function errorAlert() {
-    alert("error");
-}
-
 function response(respuesta) {
-    if (respuesta === "OK") {
+    if (respuesta["status"] != "OK") {
+        myAlertTop(respuesta["mensaje"]);
+        borrarPublicacion();
+    } else {
         window.location = "index.php";
     }
 }
 
+function borrarPublicacion(){
+    data = "&Id=" + IdPublicacion;
+    $.ajax({
+        url: "BorrarPublicacion.php",
+        dataType: "JSON",
+        type: "POST",
+        data: data,
+        success: reloadPage,
+        timeout: 4000,
+        error: errorPage
+    });
+}
+
+function reloadPage(){
+    
+}
+
+function errorPage(){
+    
+}
 
 function ShowRazas() {
     if ($("#especie").val() != 0) {
@@ -297,22 +301,26 @@ function ShowRazas() {
 }
 
 function errorPag() {
-
+    myAlertTop('La especie seleccionada no tiene razas registradas');
 }
 
 function LoadRazas(respuesta) {
-    razas = respuesta["razas"];
-    $("#razas").empty();
-    resultadoRazas = "<p  style='text-align: left'><b>Raza:</b>"
-    resultadoRazas += "<select name='raza' id='raza' class='form-control input-md' style='display: inline; width: 25%;margin-left: 1%;'>";
-    if (razas.length > 0) {
-        for (pos = 0; pos < razas.length; pos++) {
-            raza = razas[pos];
-            resultadoRazas += "<option value='" + raza["Id"] + "'>" + raza["Nombre"] + "</option>";
+    if (respuesta["status"] === "OK") {
+        razas = respuesta["razas"];
+        $("#razas").empty();
+        resultadoRazas = "<p  style='text-align: left'><b>Raza:</b>"
+        resultadoRazas += "<select name='raza' id='raza' class='form-control input-md' style='display: inline; width: 25%;margin-left: 1%;'>";
+        if (razas.length > 0) {
+            for (pos = 0; pos < razas.length; pos++) {
+                raza = razas[pos];
+                resultadoRazas += "<option value='" + raza["Id"] + "'>" + raza["Nombre"] + "</option>";
+            }
         }
+        resultadoRazas += "</select></p>";
+        $("#razas").append(resultadoRazas);
+    } else {
+        myAlertTop(respuesta["mensaje"]);
     }
-    resultadoRazas += "</select></p>";
-    $("#razas").append(resultadoRazas);
 }
 
 

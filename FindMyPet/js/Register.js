@@ -41,7 +41,7 @@ function checkCampos() {
             $("#surname").addClass("invalido");
         } else {
             if (username === '' || !username.match(pattern)) {
-                camposInvalidos("El email ingresado no es valido");
+                camposInvalidos("El email ingresado no es valido, debe ser del formato ejemplo@ejemplo.com");
                 $("#username").addClass("invalido");
             } else {
                 if (pass === '' || !pass.match(/^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/)) {

@@ -23,10 +23,10 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-form navbar-right" style="padding-left: 2px;">
-                        <button id="btnDisplayRegister" class="btn btn-primary" data-toggle="modal" data-target="#RegisterModal">Register</button>
+                        <button id="btnDisplayRegister" class="btn btn-primary" data-toggle="modal" data-target="#RegisterModal">Registrarse</button>
                     </div>
                     <div class="navbar-form navbar-right" style="padding-right: 2px;" >
-                        <button id="btnDisplayLogin" class="btn btn-success" data-toggle="modal" data-target="#LoginModal">Login</button>
+                        <button id="btnDisplayLogin" class="btn btn-success" data-toggle="modal" data-target="#LoginModal">Iniciar sesion</button>
                     </div>
                 </div><!--/.navbar-collapse -->
             </div>

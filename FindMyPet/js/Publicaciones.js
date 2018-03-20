@@ -15,15 +15,18 @@ function inicializo() {
     $("#cantPaginado").click(irPaginaFiltro);
     $("#btnFiltros").click(limpiarFiltros);
     irPaginaFiltro();
+    $("[data-hide]").on("click", function () {
+        $(this).closest("." + $(this).attr("data-hide")).hide();
+    });
 }
 
-function limpiarFiltros(){
+function limpiarFiltros() {
     $("#razas").empty();
     $("#razas").css('display', 'none');
     $("#especie").val('0');
     $("#tipoPublicacion").val("Todas");
     $("#barrio").val("0");
-    $("#cantPaginado").val("4");
+    $("#cantPaginado").val("10");
     $("#estado").val("0");
     irPaginaFiltro();
 }
@@ -41,27 +44,31 @@ function ShowRazas() {
             timeout: 4000,
             error: errorPag
         });
-    }else{
+    } else {
         $("#razas").css('display', 'none');
         irPaginaFiltro();
     }
 }
 
 function LoadRazas(respuesta) {
-    razas = respuesta["razas"];
-    $("#razas").empty();
-    $("#razas").css('display', 'block');
-    resultadoRazas = "<label for='raza'>Raza:</label>";
-    resultadoRazas += "<select name='raza' id='raza' class='form-control input-md'><option value='0'>Todas</option>";
-    if (razas.length > 0) {
-        for (pos = 0; pos < razas.length; pos++) {
-            raza = razas[pos];
-            resultadoRazas += "<option value='" + raza["Id"] + "'>" + raza["Nombre"] + "</option>";
+    if (respuesta["status"] === "OK") {
+        razas = respuesta["razas"];
+        $("#razas").empty();
+        $("#razas").css('display', 'block');
+        resultadoRazas = "<label for='raza'>Raza:</label>";
+        resultadoRazas += "<select name='raza' id='raza' class='form-control input-md'><option value='0'>Todas</option>";
+        if (razas.length > 0) {
+            for (pos = 0; pos < razas.length; pos++) {
+                raza = razas[pos];
+                resultadoRazas += "<option value='" + raza["Id"] + "'>" + raza["Nombre"] + "</option>";
+            }
         }
+        resultadoRazas += "</select>";
+        $("#razas").append(resultadoRazas);
+        $("#raza").click(irPaginaFiltro);
+    } else {
+        myAlertTop(respuesta["mensaje"]);
     }
-    resultadoRazas += "</select>";
-    $("#razas").append(resultadoRazas);
-    $("#raza").click(irPaginaFiltro);
 }
 
 function ShowFilters() {
@@ -88,7 +95,7 @@ function irPaginaFiltro() {
 }
 
 function respuestaPag(respuesta) {
-    if (respuesta["result"] == "OK") {
+    if (respuesta["result"] === "OK") {
         $("#busqueda").empty();
         pagina = respuesta["pagina"];
         fotos = respuesta["fotos"];
@@ -106,13 +113,12 @@ function respuestaPag(respuesta) {
                 busqueda += "'>";
                 busqueda += "<a class='btnInfo' href='#' alt='" + publicacion["Id"] + "'><h2>" + publicacion["Titulo"] + "</h2></a>";
                 busqueda += "<div class='card' style='width:350px'>";
-                for (i = 0; i < fotos.length; i++){
+                for (i = 0; i < fotos.length; i++) {
                     foto = fotos[i];
-                    if(foto["IdPublicacion"] == publicacion["Id"]){
+                    if (foto["IdPublicacion"] == publicacion["Id"]) {
                         busqueda += "<img class='card-img-top' src='" + foto["Ruta"] + "' alt='Card image' style='width:75%'>";
                     }
                 }
-                //busqueda += "<img class='card-img-top' src='img/cat.png' alt='Card image' style='width:75%'>";
                 busqueda += "<div class='card-body'>";
                 busqueda += "<h4 class='card-title'>" + publicacion["Tipo"] + "</h4>";
                 busqueda += "<p class='card-text' style='word-wrap: break-word;'><em>";
@@ -120,7 +126,7 @@ function respuestaPag(respuesta) {
                 cant = 0;
                 for (i = 0; i < publicacion["Descripcion"].length && i < 151; i++) {
                     desc += publicacion["Descripcion"].charAt(i);
-                    if(i >= 150){
+                    if (i >= 150) {
                         desc += "...";
                     }
                 }
@@ -129,13 +135,13 @@ function respuestaPag(respuesta) {
                 busqueda += "</div>";
                 busqueda += "</div>";
             }
-            
-            busqueda += "<div style='position: fixed; bottom: 0; margin-left: 50%; width: 50%; margin-top:'" + $(window).height() + "' ;' id='paginaActual' alt='" + pagina +"'>";
-            if(pagina > 1){
-                busqueda += "<img class='card-img-top' id='anterior' src='img/arrow-back.png' alt='" + (pagina -1) + "' height='30' width='30' style='margin-right: 10%; cursor:pointer;'>";
+
+            busqueda += "<div style='position: fixed; bottom: 0; margin-left: 50%; width: 50%; margin-top:'" + $(window).height() + "' ;' id='paginaActual' alt='" + pagina + "'>";
+            if (pagina > 1) {
+                busqueda += "<img class='card-img-top' id='anterior' src='img/arrow-back.png' alt='" + (pagina - 1) + "' height='30' width='30' style='margin-right: 10%; cursor:pointer;'>";
             }
-            if(cantPaginas > pagina){
-                busqueda += "<img class='card-img-top' id='siguiente' src='img/arrow-next.png' alt='" + (pagina +1) + "' height='30' width='30' style='cursor:pointer;'>";
+            if (cantPaginas > pagina) {
+                busqueda += "<img class='card-img-top' id='siguiente' src='img/arrow-next.png' alt='" + (pagina + 1) + "' height='30' width='30' style='cursor:pointer;'>";
             }
             busqueda += "</div>";
             busqueda += "</div>";
@@ -148,11 +154,11 @@ function respuestaPag(respuesta) {
             $("#busqueda").append(busqueda);
         }
     } else {
-        alert("ERROR " + respuesta["result"]);
+        myAlertTop(respuesta["mensaje"]);
     }
 }
 
-function PaginaAnterior(){
+function PaginaAnterior() {
     data = "&nombrePublicacion=" + $("#nombrePublicacion").val();
     data += "&tipoPublicacion=" + $("#tipoPublicacion").val();
     data += "&especie=" + $("#especie").val();
@@ -171,7 +177,7 @@ function PaginaAnterior(){
     });
 }
 
-function PaginaSiguiente(){
+function PaginaSiguiente() {
     data = "&nombrePublicacion=" + $("#nombrePublicacion").val();
     data += "&tipoPublicacion=" + $("#tipoPublicacion").val();
     data += "&especie=" + $("#especie").val();
@@ -196,5 +202,13 @@ function Publicacion() {
 }
 
 function errorPag() {
-    alert("ERROR");
+    myAlertTop("La pagina se encuentra en mantenimiento, por favor reintent mas tarde. Disculpe las molestias")
+}
+
+function myAlertTop(mensaje) {
+    $(".myAlert-top").show();
+    setTimeout(function () {
+        $(".myAlert-top").hide();
+    }, 8000);
+    $("#error").html(mensaje);
 }

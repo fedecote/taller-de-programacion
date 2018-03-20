@@ -11,12 +11,12 @@
                         <div class="vl" style="border-left: 1px solid lightgray;
                              height: 57px;"></div>
                     </li>
-                    <li><a href="Estadisticas.php">Statics</a></li>
+                    <li><a href="Estadisticas.php">Estadisticas</a></li>
                     <li>
                         <div class="vl" style="border-left: 1px solid lightgray;
                              height: 57px;"></div>
                     </li>
-                    <li><a href="IrANuevaPublicacion.php">New Publication</a></li>
+                    <li><a href="IrANuevaPublicacion.php">Registrar aviso</a></li>
                     <li>
                         <div class="vl" style="border-left: 1px solid lightgray;
                              height: 57px;"></div>
@@ -36,7 +36,7 @@
                             <a  id="usuario" alt="{$Username}" style="color:white;">Bienvenido <strong>{$Username}</strong></a>
                         </div>
                         <div id="logout" style="text-align: -webkit-right;">    
-                            <a  href="Logout.php">Logout</a>
+                            <a  href="Logout.php">Cerrar sesion</a>
                         </div>
                     </form>
                 </div><!--/.navbar-collapse -->
