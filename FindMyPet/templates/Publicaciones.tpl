@@ -27,7 +27,7 @@
                         <option value="{$barrio.Id}">{$barrio.Nombre}</option>
                     {/foreach}
                 </select>
-                <label for="cantPaginado">Cantidad de publicaciones por pagina:</label>
+                <label for="cantPaginado">Cantidad de avisos por pagina:</label>
                 <select name="cantPaginado" id="cantPaginado" class="form-control input-md">
                     <option selected ="selected" value="10">10</option>
                     <option value="15">15</option>

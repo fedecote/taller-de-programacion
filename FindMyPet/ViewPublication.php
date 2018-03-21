@@ -72,6 +72,14 @@ if ($conn->conectar()) {
                 $smarty->assign("raza", $raza['Nombre']);
             }
         }
+        $sql = "SELECT * FROM BARRIO";
+        $sql .= " WHERE Id=" . $publicacion['IdBarrio'];
+        $parametros = array();
+        if ($conn->consulta($sql, $parametros)) {
+            $barrio = $conn->siguienteRegistro();
+            $smarty->assign("barrio", $barrio['Nombre']);
+        }
+        
         $sql = "SELECT * FROM USUARIO";
         $sql .= " WHERE Id=" . $publicacion['IdUsuario'];
         $parametros = array();

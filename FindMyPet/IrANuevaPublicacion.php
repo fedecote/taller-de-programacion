@@ -11,14 +11,14 @@ $esUsuario = $_SESSION['ingreso'];
 $conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
 
 if ($conn->conectar()) {
-    $sql = "SELECT * FROM ESPECIE";
+    $sql = "SELECT * FROM ESPECIE ORDER BY Nombre ASC";
     $parametros = array();
     if ($conn->consulta($sql, $parametros)) {
         $especies = $conn->restantesRegistros();
         $smarty->assign("especies", $especies);
     }
     
-    $sql = "SELECT * FROM BARRIO";
+    $sql = "SELECT * FROM BARRIO ORDER BY Nombre ASC";
     $parametros = array();
     if ($conn->consulta($sql, $parametros)) {
         $barrios = $conn->restantesRegistros();

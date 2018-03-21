@@ -5,7 +5,7 @@
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-            <title></title>
+            <title>Ver aviso</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -68,9 +68,10 @@
                         {/if}
                     </div>
                     <div class="card-body" style="float: left; padding-left: 6%;  width: 50%">
-                        <p style="text-align: left"><b>Tipo de publicacion:</b>{$tipo}</p>
-                        <p style="text-align: left"><b>Especie:</b>{$especie}</p>
-                        <p style="text-align: left"><b>Raza:</b>{$raza}</p>
+                        <p style="text-align: left"><b style="margin-right: 2%;">Tipo de publicacion:</b>{$tipo}</p>
+                        <p style="text-align: left"><b style="margin-right: 2%;">Especie:</b>{$especie}</p>
+                        <p style="text-align: left"><b style="margin-right: 2%;">Raza:</b>{$raza}</p>
+                        <p style="text-align: left"><b style="margin-right: 2%;">Barrio:</b>{$barrio}</p>
                         <p style="text-align: left;"><b>Descripcion:</b></p>
                         <p style="text-align: left; width:100%; word-wrap: break-word;">{$descripcion}</p>
                         <div class="question">

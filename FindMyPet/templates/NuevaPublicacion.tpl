@@ -5,7 +5,7 @@
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-            <title></title>
+            <title>Registrar aviso</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -37,15 +37,15 @@
                     <div style="width:30%; float:left; padding-left: 10%; margin-right: 6%;">
                         <div id="imagenPrincipal" style="width: 400%; height: 280px;">
                             <div id="agregarImagenPrincipal" name="agregarImagenPrincipal" style="width: 30%; height: auto; float: left; border:1px solid lightgray; cursor: pointer">
-                                <p style="margin-top: 35%; text-align: center; color: darkgray; cursor: pointer; font-size: 150%;"><b>Agregar Imagen</b></p>
+                                <p style="margin-top: 35%; text-align: center; color: darkgray; cursor: pointer; font-size: 150%;"><b>Agregar foto de portada</b></p>
                             </div>
                             <!--img id="agregarImagenPrincipal" name="agregarImagenPrincipal" class="card-img-top" src="img/add.png" alt="0" style="margin-left: 31%; width: 50%; cursor: pointer;"-->
                         </div>
                         <div id="map" style="width: 120%;height: 350px; margin-top: 5%;"></div>
                     </div>
                     <div class="card-body" style="float: left; padding-left: 0%;  width: 50%">
-                        <p style="text-align: left"><b>Titulo:</b><input class="form-control" id="titulo" type="text" placeholder="Titulo publicacion..." style="width: 70%; margin-left: 3%"></p>
-                        <p style="text-align: left"><b>Tipo de publicacion:</b>
+                        <p style="text-align: left"><b>Titulo:</b><input class="form-control" id="titulo" type="text" placeholder="Titulo publicacion..." style="width: 70%; margin-left: 3%; display: initial;"></p>
+                        <p style="text-align: left"><b>Tipo de aviso:</b>
                             <select name="tipoPublicacion" id="tipoPublicacion" class="form-control input-md" style="display: inline; width: 25%;">
                                 <option value="Perdida">Perdida</option>
                                 <option value="Perdida">Encontrada</option>
@@ -76,7 +76,7 @@
                         <p style="text-align: left;"><b>Descripcion:</b></p>
                         <textarea id="descripcion" rows="6" cols="50" type="text" placeholder="Descripcion..." style="float: left;"></textarea>
                         <div id="holder" alt="0" style="position: relative; margin-top: 160px; width: 90%; margin-left: -10%; height: 200px; cursor: pointer; border-color: darkgrey;">
-                            <p id="textAgregar" style="position: relative; margin-top: 12%;font-size: 100%;color: lightslategrey; cursor: pointer"><b>Haz click para arbir el explorador de windows y agregar imagenes</b></p>
+                            <p id="textAgregar" style="position: relative; margin-top: 12%;font-size: 100%;color: lightslategrey; cursor: pointer"><b>Haz click para abrir el explorador de windows y agregar imagenes</b></p>
                         </div>
 
                         <div style="margin-top: 3%; width: 100%; margin-left: -7%;">

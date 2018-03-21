@@ -2,7 +2,8 @@ $(document).ready(inicializo);
 
 function inicializo() {
     imagesFiles = [];
-    $("#especie").click(ShowRazas);
+    //$("#especie").click(ShowRazas);
+    $("#especie").change(ShowRazas);
     $("#agregarImagenPrincipal").click(OpenWindowsExplorer);
     $(window).on('resize', resizeImage);
     $("#agregarImagenPrincipal").mouseenter(focusGained);
@@ -28,9 +29,24 @@ function inicializo() {
     $("#holder").on('dragenter', dragEnter);
     $("#holder").on('dragleave', dragLeave);
     ShowRazas();
+    checkBarrios();
+    checkEspecies();
     myMap();
     gmarkers = [];
 }
+
+function checkEspecies(){
+    if($("#especie").val() == ""){
+        myAlertTop("No hay especies registradas")
+    }
+}
+
+function checkBarrios(){
+    if($("#barrio").val() == ""){
+        myAlertTop("No hay barrios registrados")
+    }
+}
+
 function myMap() {
     var mapCanvas = document.getElementById("map");
     var myCenter = new google.maps.LatLng(-34.8826933, -56.1600915);
@@ -97,8 +113,8 @@ function focusLost() {
 }
 
 function cleanInvalidFields() {
-    if ($("#titulo").val()) {
-        $("#titulo").removeClass("invalido");
+    if ($(this).val()) {
+        $(this).removeClass("invalido");
     }
 }
 
@@ -161,10 +177,25 @@ function checkFields() {
         myAlertTop("El titulo no puede quedar vacio");
         $("#titulo").addClass("invalido");
     } else {
-        if ($("#inputUpload").val() === "") {
-            myAlertTop("La publicacion debe tener al menos una imagen de portada");
+        if ($("#especie").val() === "") {
+            myAlertTop("Debe seleccionar una especie");
+            $("#especie").addClass("invalido");
         } else {
-            guardar();
+            if ($("#raza").val() == null) {
+                myAlertTop("Debe seleccionar una raza");
+                $("#raza").addClass("invalido");
+            } else {
+                if ($("#barrio").val() === "") {
+                    myAlertTop("Debe seleccionar un barrio");
+                    $("#barrio").addClass("invalido");
+                } else {
+                    if ($("#inputUpload").val() === "") {
+                        myAlertTop("La publicacion debe tener al menos una imagen de portada");
+                    } else {
+                        guardar();
+                    }
+                }
+            }
         }
     }
 }
@@ -264,7 +295,7 @@ function response(respuesta) {
     }
 }
 
-function borrarPublicacion(){
+function borrarPublicacion() {
     data = "&Id=" + IdPublicacion;
     $.ajax({
         url: "BorrarPublicacion.php",
@@ -277,12 +308,12 @@ function borrarPublicacion(){
     });
 }
 
-function reloadPage(){
-    
+function reloadPage() {
+
 }
 
-function errorPage(){
-    
+function errorPage() {
+
 }
 
 function ShowRazas() {

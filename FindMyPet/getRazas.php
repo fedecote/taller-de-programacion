@@ -20,7 +20,7 @@ try {
                 echo json_encode($respuesta);
             } else {
 
-                $sql = "SELECT * FROM RAZA WHERE IdEspecie =" . $IdEspecie;
+                $sql = "SELECT * FROM RAZA WHERE IdEspecie ='" . $IdEspecie. "' ORDER BY Nombre ASC";
                 $parametros = array();
                 if ($conn->consulta($sql, $parametros)) {
                     $razas = $conn->restantesRegistros();

@@ -53,20 +53,22 @@ function ShowRazas() {
 function LoadRazas(respuesta) {
     if (respuesta["status"] === "OK") {
         razas = respuesta["razas"];
-        $("#razas").empty();
-        $("#razas").css('display', 'block');
-        resultadoRazas = "<label for='raza'>Raza:</label>";
-        resultadoRazas += "<select name='raza' id='raza' class='form-control input-md'><option value='0'>Todas</option>";
         if (razas.length > 0) {
+            $("#razas").empty();
+            $("#razas").css('display', 'block');
+            resultadoRazas = "<label for='raza'>Raza:</label>";
+            resultadoRazas += "<select name='raza' id='raza' class='form-control input-md'><option value='0'>Todas</option>";
             for (pos = 0; pos < razas.length; pos++) {
                 raza = razas[pos];
                 resultadoRazas += "<option value='" + raza["Id"] + "'>" + raza["Nombre"] + "</option>";
             }
+            resultadoRazas += "</select>";
+            $("#razas").append(resultadoRazas);
+            $("#raza").click(irPaginaFiltro);
         }
-        resultadoRazas += "</select>";
-        $("#razas").append(resultadoRazas);
-        $("#raza").click(irPaginaFiltro);
     } else {
+        $("#razas").empty();
+        $("#razas").css('display', 'none');
         myAlertTop(respuesta["mensaje"]);
     }
 }
