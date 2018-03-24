@@ -6,12 +6,20 @@ require_once("config/configuracion.php");
 
 $respuesta = array();
 
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
 try {
     $conn = new ConexionBD("mysql", "localhost", "FindMyPet", "root", "root");
 
-    setcookie("paso1", "paso");
     if ($conn->conectar()) {
-        setcookie("paso2", "paso");
         $email = $_POST["usuario"];
         $password = $_POST["password"];
         $name = $_POST["name"];
@@ -20,42 +28,52 @@ try {
         $sql = "SELECT * FROM USUARIO WHERE Email='" . $email . "'";
         $param = array();
         if ($conn->consulta($sql, $param)) {
-            setcookie("paso3", "paso");
             $result = $conn->restantesRegistros();
             if (count($result) > 0) {
-                setcookie("paso4", "paso");
                 $respuesta['estado'] = "NO OK";
                 $respuesta['mensaje'] = "El nombre de usuario ingresado ya existe";
                 echo json_encode($respuesta);
                 return;
             } else {
-                $param = array(
-                    array("usuario", $email, "string"),
-                    array("password", $password, "string"),
-                    array("name", $name, "string"),
-                    array("surname", $surname, "string"),
-                );
-                $sql = "insert USUARIO (Email, Nombre, Apellido, Password) "
-                        . "values( :usuario, :name, :surname, :password)";
+                $token = generateRandomString();
+                $sql = "SELECT * FROM USUARIO WHERE Token='" . $token . "'";
                 if ($conn->consulta($sql, $param)) {
-                    setcookie("paso5", "paso");
-                    if ($conn->ultimoIdInsert() > 0) {
-                        setcookie("paso6", "paso");
-                        $_SESSION['ingreso'] = true;
-                        setcookie("usuario", $email);
-                        $respuesta['usuario'] = $email;
-                        $respuesta['estado'] = "OK";
+                    $result = $conn->restantesRegistros();
+                    while (count($result) > 0) {
+                        $token = generateRandomString();
+                        $sql = "SELECT * FROM USUARIO WHERE Token='" . $token . "'";
+                        if ($conn->consulta($sql, $param)) {
+                            $result = $conn->restantesRegistros();
+                        }
+                    }
+                    $param = array(
+                        array("usuario", $email, "string"),
+                        array("password", $password, "string"),
+                        array("name", $name, "string"),
+                        array("surname", $surname, "string"),
+                        array("token", $token, "string"),
+                    );
+                    $sql = "insert USUARIO (Email, Nombre, Apellido, Password, Token) "
+                            . "values( :usuario, :name, :surname, :password, :token)";
+                    if ($conn->consulta($sql, $param)) {
+                        if ($conn->ultimoIdInsert() > 0) {
+                            $_SESSION['ingreso'] = true;
+                            setcookie("usuario", $email);
+                            setcookie("token", $token);
+                            $respuesta['usuario'] = $email;
+                            $respuesta['estado'] = "OK";
+                        } else {
+                            $respuesta['estado'] = "NO OK";
+                            $respuesta['mensaje'] = "Ocurrio un problema inesperado, por favor reintente mas tarde";
+                        }
+                        echo json_encode($respuesta);
+                        return;
                     } else {
                         $respuesta['estado'] = "NO OK";
                         $respuesta['mensaje'] = "Ocurrio un problema inesperado, por favor reintente mas tarde";
+                        echo json_encode($respuesta);
+                        return;
                     }
-                    echo json_encode($respuesta);
-                    return;
-                } else {
-                    $respuesta['estado'] = "NO OK";
-                    $respuesta['mensaje'] = "Ocurrio un problema inesperado, por favor reintente mas tarde";
-                    echo json_encode($respuesta);
-                    return;
                 }
             }
         } else {

@@ -27,8 +27,10 @@ try {
                 $_SESSION['ingreso'] = true;
                 if ($remember === "true") {
                     setcookie("usuario", $usuario['Email'], time() + (10 * 365 * 24 * 60 * 60));
-                }else{
+                    setcookie("token", $usuario['Token'], time() + (10 * 365 * 24 * 60 * 60));
+                } else {
                     setcookie("usuario", $usuario['Email']);
+                    setcookie("token", $usuario['Token']);
                 }
                 $respuesta['usuario'] = $usuario;
                 $respuesta['estado'] = "OK";

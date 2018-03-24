@@ -19,13 +19,19 @@ $longitud = $_POST['longitud'];
 $respuesta = array();
 
 if ($conn->conectar()) {
-    $sql = "SELECT * FROM USUARIO WHERE Email = '" . $email . "'";
+    $token = $_COOKIE["token"];
+    $sql = "SELECT * FROM USUARIO WHERE Token = '" . $token . "'";
     $parametros = array();
     if ($conn->consulta($sql, $parametros)) {
         $result = $conn->siguienteRegistro();
         $IdUsuario = $result["Id"];
-        $sql = "INSERT PUBLICACION(IdUsuario, Tipo, IdEspecie, IdRaza, IdBarrio, Titulo, Descripcion, Latitud, Longitud)VALUES('" . $IdUsuario . "', '";
-        $sql .= $tipoPublicacion . "', '" . $especie . "', '" . $raza . "', '" . $barrio . "', '" . $titulo . "', '" . $descripcion . "', '" . $latitud . "', '" . $longitud . "')";
+
+        $now = new DateTime();
+        $fecha = date("Y-m-d H:i:s", $now->getTimestamp());
+        $newdate = date('Y-m-d', strtotime($fecha));
+        
+        $sql = "INSERT PUBLICACION(IdUsuario, Tipo, IdEspecie, IdRaza, IdBarrio, Titulo, Descripcion, Latitud, Longitud, Fecha)VALUES('" . $IdUsuario . "', '";
+        $sql .= $tipoPublicacion . "', '" . $especie . "', '" . $raza . "', '" . $barrio . "', '" . $titulo . "', '" . $descripcion . "', '" . $latitud . "', '" . $longitud . "','" . $newdate . "')";
         $parametros = array();
         if ($conn->consulta($sql, $parametros)) {
             if ($conn->ultimoIdInsert() > 0) {

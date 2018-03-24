@@ -31,6 +31,14 @@ p.question{
 
 }
 
+p.question-fecha{
+    margin-top: 8%;
+    font-size: 75%;
+    margin-left: 2%;
+    color: dimgrey;
+    margin-left: 75%;
+}
+
 .answer{
     text-align: left;
     padding-left: 5%;

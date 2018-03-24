@@ -4,7 +4,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index.php">Find my pet</a>
+                    <a class="navbar-brand" href="index.php">Inicio</a>
                 </div>
                 <ul class="nav navbar-nav">
                     <li>
@@ -17,6 +17,11 @@
                              height: 57px;"></div>
                     </li>
                     <li><a href="IrANuevaPublicacion.php">Registrar aviso</a></li>
+                    <li>
+                        <div class="vl" style="border-left: 1px solid lightgray;
+                             height: 57px;"></div>
+                    </li>
+                    <li><a href="MisPublicaciones.php">Mis aviso</a></li>
                     <li>
                         <div class="vl" style="border-left: 1px solid lightgray;
                              height: 57px;"></div>

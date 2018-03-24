@@ -19,7 +19,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a  id="home" class="navbar-brand" href="index.php">Find my pet</a>
+                    <a  id="home" class="navbar-brand" href="index.php">Inicio</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-form navbar-right" style="padding-left: 2px;">

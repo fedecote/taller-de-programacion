@@ -9,7 +9,9 @@ function inicializo() {
     $("#filter").click(ShowFilters);
     $("#especie").change(ShowRazas);
     $("#raza").change(irPaginaFiltro);
-    //$("#estado").change(irPaginaFiltro);
+    $("#estado").change(irPaginaFiltro);
+    $("#datepickerDesde").change(irPaginaFiltro);
+    $("#datepickerHasta").change(irPaginaFiltro);
     $("#tipoPublicacion").change(irPaginaFiltro);
     $("#barrio").change(irPaginaFiltro);
     $("#cantPaginado").change(irPaginaFiltro);
@@ -27,7 +29,9 @@ function limpiarFiltros() {
     $("#tipoPublicacion").val("Todas");
     $("#barrio").val("0");
     $("#cantPaginado").val("10");
-    $("#estado").val("0");
+    $("#estado").val("2");
+    $("#datepickerHasta").val(null);
+    $("#datepickerDesde").val(null);
     irPaginaFiltro();
 }
 
@@ -77,16 +81,36 @@ function ShowFilters() {
     $("#myForm").show();
 }
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 function irPaginaFiltro() {
     data = "&nombrePublicacion=" + $("#nombrePublicacion").val();
     data += "&cantPaginado=" + $("#cantPaginado").val();
     data += "&tipoPublicacion=" + $("#tipoPublicacion").val();
     data += "&especie=" + $("#especie").val();
     data += "&raza=" + $("#raza").val();
+    data += "&estado=" + $("#estado").val();
     data += "&barrio=" + $("#barrio").val();
     data += "&pagina=" + $("#paginaActual").val();
+    data += "&token=" + getCookie("token");
+    data += "&desde=" + $("#datepickerDesde").val();
+    data += "&hasta=" + $("#datepickerHasta").val();
     $.ajax({
-        url: "filtrar.php",
+        url: "Filtrar2.php",
         dataType: "JSON",
         type: "POST",
         data: data,

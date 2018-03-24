@@ -14,6 +14,7 @@ function inicializo() {
     $("#inputUpload").change(previewMainImage);
     $("#uploadManyFiles").change(previewImage);
     resizeImage();
+    $("#btnCancelar").click(Cancelar);
     $("#btnGuardar").click(checkFields);
     $("#titulo").focusout(cleanInvalidFields);
     $(".myAlert-top").hide();
@@ -33,6 +34,10 @@ function inicializo() {
     checkEspecies();
     myMap();
     gmarkers = [];
+}
+
+function Cancelar(){
+    window.location = "index.php";
 }
 
 function checkEspecies(){

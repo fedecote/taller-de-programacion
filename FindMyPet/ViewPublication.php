@@ -86,6 +86,7 @@ if ($conn->conectar()) {
         if ($conn->consulta($sql, $parametros)) {
             $user = $conn->siguienteRegistro();
             $smarty->assign("email", $user['Email']);
+            $smarty->assign("token", $user['Token']);
 
             $sql = "SELECT * FROM Pregunta";
             $sql .= " WHERE IdPublicacion=" . $publicacion['Id'];
@@ -99,6 +100,7 @@ if ($conn->conectar()) {
 }
 $smarty->assign("ingreso", $esUsuario);
 $smarty->assign("Username", $_COOKIE['usuario']);
+$smarty->assign("actualToken", $_COOKIE['token']);
 
 $smarty->display("ViewPublication.tpl");
 ?>

@@ -44,7 +44,7 @@
                 <div id="containerClose" style="width: 50%;">
                     {if ($estado == 0)}
                         {if ($ingreso)}
-                            {if ($Username == $email)}
+                            {if ($token == $actualToken)}
                                 <button id="btnClose" alignment="right" class="btn" style="float: right; margin-top: 1%;" data-toggle="modal" data-target="#CloseModal">Cerrar publicacion</button>
                             {/if}
                         {/if}
@@ -77,9 +77,50 @@
                         <div class="question">
                             {$lastElement = end($preguntas)}
                             {foreach from=$preguntas item=pregunta}
+                                {if ($pregunta.FechaPregunta|date_format:"%A" == "Monday")}
+                                    {$dia = "Lunes"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%A" == "Tuesday")}    
+                                    {$dia = "Martes"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%A" == "Wednesday")}
+                                    {$dia = "Miercoles"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%A" == "Thursday")}
+                                    {$dia = "Jueves"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%A" == "Friday")}
+                                    {$dia = "Viernes"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%A" == "Saturday")}
+                                    {$dia = "Sabado"}
+                                {else}
+                                    {$dia = "Domingo"}
+                                {/if}
+                                {if ($pregunta.FechaPregunta|date_format:"%B" == "January")}
+                                    {$mes = "Enero"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "February")}    
+                                    {$mes = "Febrero"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "March")}
+                                    {$mes = "Marzo"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "April")}
+                                    {$mes = "Abril"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "May")}
+                                    {$mes = "Mayo"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "June")}
+                                    {$mes = "Junio"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "July")}
+                                    {$mes = "Julio"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "August")}
+                                    {$mes = "Agosto"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "September")}
+                                    {$mes = "Setiembre"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "October")}
+                                    {$mes = "Octubre"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "November")}
+                                    {$mes = "Noviembre"}
+                                {else if ($pregunta.FechaPregunta|date_format:"%B" == "December")}
+                                    {$mes = "Diciembre"}
+                                {/if}
                                 {if ($pregunta.Respuesta == '' && $pregunta != $lastElement)}
                                     <p class="question" style="margin-bottom: 1%; margin-top: 1%;">{$pregunta.Pregunta}</p>
-                                    {if ($Username == $email && $ingreso && $pregunta.Respuesta == '')}
+                                    <p class="question-fecha" style="margin-bottom: 1%; margin-top: 1%;">{$dia}{$pregunta.FechaPregunta|date_format:" %e "} de {$mes}{$pregunta.FechaPregunta|date_format:" %R"}</p>
+                                    {if ($token == $actualToken && $ingreso && $pregunta.Respuesta == '')}
                                         <input id="{$pregunta.Id}" name="nuevaPregunta" alt="{$pregunta.Id}" type="name" placeholder="Responder..." class="form-control" style="margin-bottom: 1%;width: 96%; margin-left: 2%;">
                                         <button id="btnResponder{$pregunta.Id}" class="btn" alignment =" right" alt="{$pregunta.Id}" style="margin-bottom: 1%;margin-left: 80%;">Responder</button>
                                         <script>$("#btnResponder{$pregunta.Id}").click(Responder)</script>
@@ -87,7 +128,8 @@
                                     <div style="height: 1px; background: #F8F3F3;margin-bottom: 1%"></div>
                                 {else}
                                     <p class="question" >{$pregunta.Pregunta}</p>
-                                    {if ($Username == $email && $ingreso && $pregunta.Respuesta == '')}
+                                    <p class="question-fecha" style="margin-bottom: 1%; margin-top: 1%;">{$dia}{$pregunta.FechaPregunta|date_format:" %e "} de {$mes}{$pregunta.FechaPregunta|date_format:" %R"}</p>
+                                    {if ($token == $actualToken && $ingreso && $pregunta.Respuesta == '')}
                                         <input id="{$pregunta.Id}" name="nuevaPregunta" alt="{$pregunta.Id}" type="name" placeholder="Responder..." class="form-control" style="margin-bottom: 1%;width: 96%; margin-left: 2%;">
                                         <button id="btnResponder{$pregunta.Id}" class="btn" alignment =" right" alt="{$pregunta.Id}" style="margin-bottom: 1%;margin-left: 80%;">Responder</button>
                                         <script>$("#btnResponder{$pregunta.Id}").click(Responder)</script>
@@ -98,13 +140,54 @@
                                     <div class="answer">
                                         <div>
                                             <p>{$pregunta.Respuesta}</p>
+                                            {if ($pregunta.FechaRespuesta|date_format:"%A" == "Monday")}
+                                                {$dia = "Lunes"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%A" == "Tuesday")}    
+                                                {$dia = "Martes"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%A" == "Wednesday")}
+                                                {$dia = "Miercoles"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%A" == "Thursday")}
+                                                {$dia = "Jueves"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%A" == "Friday")}
+                                                {$dia = "Viernes"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%A" == "Saturday")}
+                                                {$dia = "Sabado"}
+                                            {else}
+                                                {$dia = "Domingo"}
+                                            {/if}
+                                            {if ($pregunta.FechaRespuesta|date_format:"%B" == "January")}
+                                                {$mes = "Enero"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "February")}    
+                                                {$mes = "Febrero"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "March")}
+                                                {$mes = "Marzo"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "April")}
+                                                {$mes = "Abril"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "May")}
+                                                {$mes = "Mayo"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "June")}
+                                                {$mes = "Junio"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "July")}
+                                                {$mes = "Julio"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "August")}
+                                                {$mes = "Agosto"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "September")}
+                                                {$mes = "Setiembre"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "October")}
+                                                {$mes = "Octubre"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "November")}
+                                                {$mes = "Noviembre"}
+                                            {else if ($pregunta.FechaRespuesta|date_format:"%B" == "December")}
+                                                {$mes = "Diciembre"}
+                                            {/if}
+                                            <p class="question-fecha" style="margin-bottom: 1%; margin-top: 1%;">{$dia}{$pregunta.FechaRespuesta|date_format:" %e "} de {$mes}{$pregunta.FechaRespuesta|date_format:" %R"}</p>
                                         </div>
                                     </div>
                                 {/if}
                             {/foreach}
                         </div>
                         {if ($ingreso)}
-                            {if ($Username !== $email)}
+                            {if ($token != $actualToken)}
                                 <input id="nuevaPregunta" name="nuevaPregunta" type="name" placeholder="Pregunta" class="form-control">
                                 <button id="btnPregunta" class="btn" style="float: right; margin-top: 1%; margin-bottom: 2%">Preguntar</button>
                             {/if}

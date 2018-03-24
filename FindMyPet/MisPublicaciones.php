@@ -52,7 +52,5 @@ if ($conn->conectar()) {
     }
 }
 $smarty->assign("ingreso", $esUsuario);
-$smarty->display("Home.tpl");
+$smarty->display("MisAvisos.tpl");
 ?>
-
-

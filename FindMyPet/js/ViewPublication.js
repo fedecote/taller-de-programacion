@@ -24,10 +24,9 @@ function toPDF() {
 function myMap() {
     if ($("#map").attr("alt") != "null") {
         var mapCanvas = document.getElementById("map");
-        var myCenter = new google.maps.LatLng(-34.8826933, -56.1600915);
-        var mapOptions = {center: myCenter, zoom: 12};
-        var map = new google.maps.Map(mapCanvas, mapOptions);
         var latLng = new google.maps.LatLng($("#latitud").attr("alt"), $("#longitud").attr("alt"));
+        var mapOptions = {center: latLng, zoom: 12};
+        var map = new google.maps.Map(mapCanvas, mapOptions);
         var marker = new google.maps.Marker({
             position: latLng,
             map: map

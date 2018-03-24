@@ -48,7 +48,7 @@
                         <p style="text-align: left"><b>Tipo de aviso:</b>
                             <select name="tipoPublicacion" id="tipoPublicacion" class="form-control input-md" style="display: inline; width: 25%;">
                                 <option value="Perdida">Perdida</option>
-                                <option value="Perdida">Encontrada</option>
+                                <option value="Encontrada">Encontrada</option>
                             </select> 
                         </p>
                         <p style="text-align: left"><b>Especie:</b>
@@ -81,7 +81,7 @@
 
                         <div style="margin-top: 3%; width: 100%; margin-left: -7%;">
                             <button type="submit" id="btnGuardar" class="btn btn-success" style="float: right; margin-bottom: 2%;">Guardar</button>
-                            <button id="btnGuardar" class="btn btn-default" style="float: left; margin-bottom: 2%;">Cancelar</button> 
+                            <button id="btnCancelar" class="btn btn-default" style="float: left; margin-bottom: 2%;">Cancelar</button> 
                         </div>
                     </div>
                 </div>
